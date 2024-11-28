@@ -18,7 +18,7 @@ export default function page() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbPage href="/home">Home</BreadcrumbPage>
+                <BreadcrumbPage href="/home">Schedule</BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
             </BreadcrumbList>

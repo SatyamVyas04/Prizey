@@ -27,11 +27,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import Link from 'next/link';
 
 const data = {
   user: {
-    name: 'Pricey User',
-    email: 'user@priceyapp.com',
+    name: 'Prizey User',
+    email: 'user@Prizeyapp.com',
     avatar: '/avatars/default-avatar.jpg',
   },
   navMain: [
@@ -43,7 +44,7 @@ const data = {
     },
     {
       title: 'Search',
-      url: '/search/new',
+      url: '/search',
       icon: SquareTerminal,
       isActive: true,
       items: [
@@ -59,50 +60,54 @@ const data = {
     },
     {
       title: 'Lists',
-      url: '/lists',
+      url: '/list',
       icon: BookOpen,
       items: [
         {
           title: 'View All Lists',
-          url: '/lists/view',
+          url: '/list/all',
         },
         {
           title: 'Create New List',
-          url: '/lists/new',
+          url: '/list/new',
+        },
+        {
+          title: 'Share List',
+          url: '/list/share',
         },
       ],
     },
     {
-      title: 'Scheduled Activities',
-      url: '/scheduled',
+      title: 'Schedules',
+      url: '/schedule',
       icon: Calendar,
       items: [
         {
-          title: 'View Schedule',
-          url: '/scheduled/view',
+          title: 'View Schedules',
+          url: '/schedule/view',
         },
         {
           title: 'Set Alerts',
-          url: '/scheduled/alerts',
+          url: '/alert',
         },
       ],
     },
     {
       title: 'Settings',
-      url: '/settings',
+      url: '/profile',
       icon: Settings2,
       items: [
         {
           title: 'Profile',
-          url: '/settings/profile',
+          url: '/profile',
         },
         {
           title: 'Preferences',
-          url: '/settings/preferences',
+          url: '/preferences',
         },
         {
           title: 'Notifications',
-          url: '/settings/notifications',
+          url: '/notifications',
         },
       ],
     },
@@ -140,21 +145,21 @@ export function AppSidebar({ ...props }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <DollarSign className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Pricey</span>
+                  <span className="truncate font-semibold">Prizey</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
