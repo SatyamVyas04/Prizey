@@ -8,7 +8,6 @@ import {
   StarIcon,
   ArrowUpRightIcon,
   Loader2,
-  FilterIcon,
   TrendingUpIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,12 +24,6 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -38,17 +31,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Separator } from '@radix-ui/react-separator';
+import { Separator } from '@/components/ui/separator';
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbSeparator,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
-// (Keep existing ProductSchema from previous implementation)
 const ProductSchema = z.object({
   id: z.string().optional(),
   asin: z.string().optional(),
@@ -73,13 +65,12 @@ export default function EnhancedProductSearchPage() {
   const [products, setProducts] = useState([]);
   const { toast } = useToast();
 
-  // Existing search submit logic (from previous implementation)
   const handleSearchSubmit = useCallback(async () => {
     const trimmedQuery = searchQuery.trim();
     if (!trimmedQuery) {
       toast({
         title: 'Validation Error',
-        description: 'Please enter a valid search query',
+        description: 'Enter a search query',
         variant: 'destructive',
       });
       return;
@@ -96,7 +87,7 @@ export default function EnhancedProductSearchPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch products');
+        throw new Error(errorData.message || 'Product search failed');
       }
 
       const data = await response.json();
@@ -107,21 +98,21 @@ export default function EnhancedProductSearchPage() {
       if (validatedProducts.length > 0) {
         setProducts(validatedProducts);
         toast({
-          title: 'Search Successful',
+          title: 'Search Complete',
           description: `Found ${validatedProducts.length} products`,
           duration: 2000,
         });
       } else {
         toast({
           title: 'No Results',
-          description: 'No products found for your search',
+          description: 'No products found',
           variant: 'default',
         });
         setProducts([]);
       }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : 'An unexpected error occurred';
+        error instanceof Error ? error.message : 'Unexpected error';
 
       toast({
         title: 'Search Error',
@@ -134,6 +125,11 @@ export default function EnhancedProductSearchPage() {
     }
   }, [searchQuery, toast]);
 
+  const placeholderSuggestions = useMemo(
+    () => ['Wireless Earbuds', 'Smart Watch', 'Gaming Laptop', 'Camera'],
+    [],
+  );
+
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key === 'Enter') {
@@ -143,9 +139,131 @@ export default function EnhancedProductSearchPage() {
     [handleSearchSubmit],
   );
 
-  const placeholderSuggestions = useMemo(
-    () => ['Wireless Headphones', 'Laptop', 'Smartphone', 'Gaming Accessories'],
-    [],
+  const renderProductCard = (product) => (
+    <Card
+      key={product.asin || product.id}
+      className="group overflow-hidden border-none shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
+    >
+      <CardHeader className="relative p-0">
+        <div className="relative h-64 w-full overflow-hidden bg-gradient-to-br from-gray-50 to-blue-100">
+          {product.thumbnailImage ? (
+            <Image
+              src={product.thumbnailImage}
+              alt={product.title || 'Product'}
+              fill
+              className="object-contain p-4 transition-transform duration-300 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+              <SparklesIcon className="h-16 w-16 opacity-50" />
+            </div>
+          )}
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-4 p-5">
+        <div className="flex items-start justify-between">
+          <CardTitle className="line-clamp-2 flex-1 pr-2 text-lg font-semibold">
+            {product.title || 'Untitled Product'}
+          </CardTitle>
+          {product.stars && (
+            <div className="flex items-center rounded-full bg-yellow-50 px-2 py-1 text-yellow-600">
+              <StarIcon className="mr-1 h-4 w-4 fill-current" />
+              <span className="text-sm font-medium">{product.stars}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between">
+          {product.brand && (
+            <Badge variant="secondary" className="truncate">
+              {product.brand}
+            </Badge>
+          )}
+          <p className="ml-auto text-2xl font-bold text-green-700">
+            {product.price?.currency || '₹'} {product.price?.value || 'N/A'}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <Badge
+            variant={product.inStock ? 'default' : 'destructive'}
+            className="uppercase tracking-wider"
+          >
+            {product.inStock ? 'Available' : 'Out of Stock'}
+          </Badge>
+          {product.reviewsCount && product.reviewsCount > 0 && (
+            <div className="text-sm text-muted-foreground">
+              {product.reviewsCount} Reviews
+            </div>
+          )}
+        </div>
+      </CardContent>
+
+      <CardFooter className="p-5 pt-0">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="group w-full">
+              Quick View
+              <ArrowUpRightIcon className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">{product.title}</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="relative h-72 rounded-lg bg-gray-50">
+                {product.thumbnailImage && (
+                  <Image
+                    src={product.thumbnailImage}
+                    alt={product.title || 'Product'}
+                    fill
+                    className="object-contain p-4"
+                  />
+                )}
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Badge variant="secondary">{product.brand}</Badge>
+                  <div className="flex items-center text-yellow-600">
+                    <StarIcon className="mr-1 h-4 w-4 fill-current" />
+                    <span>{product.stars}</span>
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-green-700">
+                  {product.price?.currency || '₹'}{' '}
+                  {product.price?.value || 'N/A'}
+                </div>
+                <Badge
+                  variant={product.inStock ? 'default' : 'destructive'}
+                  className="text-sm"
+                >
+                  {product.inStock ? 'In Stock' : 'Out of Stock'}
+                </Badge>
+                {product.reviewsCount && (
+                  <div className="text-sm text-muted-foreground">
+                    {product.reviewsCount} Customer Reviews
+                  </div>
+                )}
+                <a
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 block"
+                >
+                  <Button className="w-full">
+                    View Details
+                    <ArrowUpRightIcon className="ml-2 h-4 w-4" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </CardFooter>
+    </Card>
   );
 
   return (
@@ -157,45 +275,26 @@ export default function EnhancedProductSearchPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/home">Search</BreadcrumbLink>
+                <BreadcrumbLink href="/search">Search</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>New</BreadcrumbPage>
+                <BreadcrumbPage>New Search</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
-      {/* Search Bar */}
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <Card className="group border-none shadow-2xl transition-all duration-300 hover:shadow-xl">
           <CardHeader className="relative">
-            <div className="absolute -right-4 -top-4 opacity-0 transition-opacity group-hover:opacity-100">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-full"
-                    >
-                      <FilterIcon className="h-5 w-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Advanced Filters</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
             <CardTitle className="flex items-center gap-3 text-3xl font-bold text-gray-800">
               <SparklesIcon className="animate-pulse text-blue-500" />
-              Find Products
+              Discover Products
             </CardTitle>
             <CardDescription className="mt-2 flex items-center gap-2 text-muted-foreground">
               <TrendingUpIcon className="h-5 w-5 text-green-500" />
-              Search for products across multiple categories
+              Explore top products across categories
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -203,7 +302,7 @@ export default function EnhancedProductSearchPage() {
               <div className="group relative flex-1">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
                 <Input
-                  placeholder={`e.g., Laptop`}
+                  placeholder="Search for products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -240,140 +339,13 @@ export default function EnhancedProductSearchPage() {
             <div className="space-y-4 text-center">
               <Loader2 className="mx-auto h-16 w-16 animate-spin text-primary" />
               <p className="animate-pulse text-2xl font-medium text-muted-foreground">
-                Discovering Amazing Products...
+                Finding Amazing Products...
               </p>
             </div>
           </div>
         ) : products.length > 0 ? (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => (
-              <Card
-                key={product.asin || product.id}
-                className="group overflow-hidden border-none shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-              >
-                <CardHeader className="relative p-0">
-                  <div className="relative h-64 w-full overflow-hidden bg-gradient-to-br from-gray-100 to-blue-100">
-                    {product.thumbnailImage ? (
-                      <Image
-                        src={product.thumbnailImage}
-                        alt={product.title || 'Product Image'}
-                        fill
-                        className="object-contain transition-transform duration-300 group-hover:scale-110"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                        <SparklesIcon className="h-16 w-16 opacity-50" />
-                      </div>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4 p-5">
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="line-clamp-2 flex-1 pr-2 text-lg font-semibold">
-                      {product.title || 'Untitled Product'}
-                    </CardTitle>
-                    {product.stars && (
-                      <div className="flex items-center rounded-full bg-yellow-50 px-2 py-1 text-yellow-500">
-                        <StarIcon className="mr-1 h-4 w-4 fill-current" />
-                        <span className="text-sm font-medium">
-                          {product.stars}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    {product.brand && (
-                      <Badge variant="secondary" className="truncate">
-                        {product.brand}
-                      </Badge>
-                    )}
-                    <p className="ml-auto text-2xl font-bold text-green-600">
-                      {product.price?.currency || '₹'}{' '}
-                      {product.price?.value || 'N/A'}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <Badge
-                      variant={product.inStock ? 'default' : 'destructive'}
-                      className="uppercase tracking-wider"
-                    >
-                      {product.inStock ? 'In Stock' : 'Out of Stock'}
-                    </Badge>
-                    {product.reviewsCount && product.reviewsCount > 0 && (
-                      <div className="text-sm text-muted-foreground">
-                        {product.reviewsCount} Reviews
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-                <CardFooter className="p-5 pt-0">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" className="group w-full">
-                        Quick View
-                        <ArrowUpRightIcon className="ml-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px]">
-                      <DialogHeader>
-                        <DialogTitle>{product.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="grid grid-cols-2 gap-6">
-                        <div className="relative h-72 rounded-lg bg-gray-100">
-                          {product.thumbnailImage && (
-                            <Image
-                              src={product.thumbnailImage}
-                              alt={product.title || 'Product Image'}
-                              fill
-                              className="object-contain p-4"
-                            />
-                          )}
-                        </div>
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="secondary">{product.brand}</Badge>
-                            <div className="flex items-center text-yellow-500">
-                              <StarIcon className="mr-1 h-4 w-4 fill-current" />
-                              <span>{product.stars}</span>
-                            </div>
-                          </div>
-                          <div className="text-2xl font-bold text-green-600">
-                            {product.price?.currency || '₹'}{' '}
-                            {product.price?.value || 'N/A'}
-                          </div>
-                          <Badge
-                            variant={
-                              product.inStock ? 'default' : 'destructive'
-                            }
-                          >
-                            {product.inStock ? 'In Stock' : 'Out of Stock'}
-                          </Badge>
-                          {product.reviewsCount && (
-                            <div className="text-sm text-muted-foreground">
-                              {product.reviewsCount} Customer Reviews
-                            </div>
-                          )}
-                          <a
-                            href={product.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-4 block"
-                          >
-                            <Button className="w-full">
-                              View on Amazon
-                              <ArrowUpRightIcon className="ml-2 h-4 w-4" />
-                            </Button>
-                          </a>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </CardFooter>
-              </Card>
-            ))}
+            {products.map(renderProductCard)}
           </div>
         ) : (
           <Card className="border-none text-center shadow-lg">
@@ -384,7 +356,7 @@ export default function EnhancedProductSearchPage() {
                   Discover Your Perfect Product
                 </p>
                 <p className="text-sm">
-                  Start by searching for something amazing!
+                  Start exploring our amazing selection!
                 </p>
                 <div className="flex justify-center gap-2">
                   {placeholderSuggestions.map((suggestion) => (

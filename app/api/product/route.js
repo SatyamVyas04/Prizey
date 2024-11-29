@@ -135,3 +135,35 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET(req) {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        priceHistory: {
+          orderBy: {
+            dateScrapped: 'desc',
+          },
+          take: 30, // Limit to last 30 price entries for performance
+        },
+      },
+      orderBy: {
+        updatedAt: 'desc', // Sort by most recently updated
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.error('Product fetch error:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: error.message,
+      },
+      { status: 500 },
+    );
+  }
+}
