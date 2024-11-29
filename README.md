@@ -14,41 +14,41 @@ Prizey is a web application that allows users to search and save products from v
 
 ## Client Routes
 
-| Page             | Path           |
-| ---------------- | -------------- |
-| Landing page     | /              |
-| Login page       | /login         |
-| Dashboard        | /home          |
-| Search page      | /search        |
-| Search new page  | /search/new    |
-| Search past page | /search/past   |
-| List page        | /list          |
-| List new page    | /list/new      |
-| List all page    | /list/all      |
-| Schedules page   | /schedule      |
-| View schedules   | /schedule/view |
-| Set alerts       | /alert         |
-| Profile          | /profile       |
-| Preferences      | /preferences   |
-| Notifications    | /notifications |
-| Share list       | /list/share    |
+| Page             | Path           | Done |
+| ---------------- | -------------- | ---- |
+| Landing page     | /              | [x]  |
+| Login page       | /login         | [x]  |
+| Dashboard        | /home          | [ ]  |
+| Search page      | /search        | [ ]  |
+| Search new page  | /search/new    | [x]  |
+| Search past page | /search/past   | [x]  |
+| List page        | /list          | [ ]  |
+| List new page    | /list/new      | [ ]  |
+| List all page    | /list/all      | [ ]  |
+| Share list       | /list/share    | [ ]  |
+| Schedules page   | /schedule      | [ ]  |
+| View schedules   | /schedule/view | [ ]  |
+| Set alerts       | /alert         | [ ]  |
+| Profile          | /profile       | [ ]  |
+| Preferences      | /preferences   | [ ]  |
+| Notifications    | /notifications | [ ]  |
 
 ## Server Routes
 
-| Route           | Method | Description                                               |
-| --------------- | ------ | --------------------------------------------------------- |
-| /scrape         | POST   | Scrape the price of a product from the retailer's website |
-| /product        | POST   | Save products coming from scrape                          |
-| /product        | GET    | Get products from the database                            |
-| /product/:id    | GET    | Get a product by id                                       |
-| /list           | POST   | Save a list of products                                   |
-| /list           | GET    | Get lists from the database                               |
-| /list/:id       | GET    | Get a list by id                                          |
-| /list/:id       | PUT    | Update a list by id                                       |
-| /list/:id       | DELETE | Delete a list by id                                       |
-| /list/:id/share | POST   | Share a list by id                                        |
-| /schedule       | POST   | Save a schedule                                           |
-| /schedule       | GET    | Get schedules from the database                           |
-| /schedule/:id   | GET    | Get a schedule by id                                      |
-| /schedule/:id   | PUT    | Update a schedule by id                                   |
-| /schedule/:id   | DELETE | Delete a schedule by id                                   |
+| Route           | Method | Description                                               | Done |
+| --------------- | ------ | --------------------------------------------------------- | ---- |
+| /scrape         | POST   | Scrape the price of a product from the retailer's website | [x]  |
+| /product        | POST   | Save products coming from scrape                          | [x]  |
+| /product        | GET    | Get products from the database                            | [x]  |
+| /product/:id    | GET    | Get a product by id                                       | [x]  |
+| /list           | POST   | Save a list of products                                   | [ ]  |
+| /list           | GET    | Get lists from the database                               | [ ]  |
+| /list/:id       | GET    | Get a list by id                                          | [ ]  |
+| /list/:id       | PUT    | Update a list by id                                       | [ ]  |
+| /list/:id       | DELETE | Delete a list by id                                       | [ ]  |
+| /list/:id/share | POST   | Share a list by id                                        | [ ]  |
+| /schedule       | POST   | Save a schedule                                           | [ ]  |
+| /schedule       | GET    | Get schedules from the database                           | [ ]  |
+| /schedule/:id   | GET    | Get a schedule by id                                      | [ ]  |
+| /schedule/:id   | PUT    | Update a schedule by id                                   | [ ]  |
+| /schedule/:id   | DELETE | Delete a schedule by id                                   | [ ]  |
