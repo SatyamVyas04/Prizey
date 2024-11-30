@@ -18,11 +18,11 @@ Prizey is a web application that allows users to search and save products from v
 | ---------------- | -------------- | ---- |
 | Landing page     | /              | [x]  |
 | Login page       | /login         | [x]  |
-| Dashboard        | /home          | [ ]  |
-| Search page      | /search        | [ ]  |
+| Dashboard        | /home          | [x]  |
+| Search page      | /search        | [x]  |
 | Search new page  | /search/new    | [x]  |
 | Search past page | /search/past   | [x]  |
-| List page        | /list          | [ ]  |
+| List page        | /list          | [x]  |
 | List new page    | /list/new      | [x]  |
 | List all page    | /list/all      | [x]  |
 | Share list       | /list/share    | [ ]  |
