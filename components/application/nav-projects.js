@@ -18,7 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 
 export function NavProjects({ projects }) {
   const { isMobile } = useSidebar();

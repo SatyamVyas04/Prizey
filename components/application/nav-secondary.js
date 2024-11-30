@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 
 export function NavSecondary({ items, ...props }) {
   return (

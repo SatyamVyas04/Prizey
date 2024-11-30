@@ -23,8 +23,8 @@ Prizey is a web application that allows users to search and save products from v
 | Search new page  | /search/new    | [x]  |
 | Search past page | /search/past   | [x]  |
 | List page        | /list          | [ ]  |
-| List new page    | /list/new      | [ ]  |
-| List all page    | /list/all      | [ ]  |
+| List new page    | /list/new      | [x]  |
+| List all page    | /list/all      | [x]  |
 | Share list       | /list/share    | [ ]  |
 | Schedules page   | /schedule      | [ ]  |
 | View schedules   | /schedule/view | [ ]  |
@@ -41,11 +41,11 @@ Prizey is a web application that allows users to search and save products from v
 | /product        | POST   | Save products coming from scrape                          | [x]  |
 | /product        | GET    | Get products from the database                            | [x]  |
 | /product/:id    | GET    | Get a product by id                                       | [x]  |
-| /list           | POST   | Save a list of products                                   | [ ]  |
-| /list           | GET    | Get lists from the database                               | [ ]  |
-| /list/:id       | GET    | Get a list by id                                          | [ ]  |
-| /list/:id       | PUT    | Update a list by id                                       | [ ]  |
-| /list/:id       | DELETE | Delete a list by id                                       | [ ]  |
+| /list           | POST   | Save a list of products                                   | [x]  |
+| /list           | GET    | Get lists from the database                               | [x]  |
+| /list/:id       | GET    | Get a list by id                                          | [x]  |
+| /list/:id       | PUT    | Update a list by id                                       | [x]  |
+| /list/:id       | DELETE | Delete a list by id                                       | [x]  |
 | /list/:id/share | POST   | Share a list by id                                        | [ ]  |
 | /schedule       | POST   | Save a schedule                                           | [ ]  |
 | /schedule       | GET    | Get schedules from the database                           | [ ]  |
