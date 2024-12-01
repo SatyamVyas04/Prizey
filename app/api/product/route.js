@@ -107,9 +107,9 @@ export async function POST(req) {
           }
         } catch (productError) {
           // console.error(
-            `Error saving individual product: ${productData.asin}`,
-            productError,
-          );
+          //   `Error saving individual product: ${productData.asin}`,
+          //   productError,
+          // );
           return null;
         }
       }),

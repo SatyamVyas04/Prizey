@@ -85,9 +85,9 @@ const LandingPage = () => {
           </div>
           <div className="animate-float relative">
             <img
-              src="https://placehold.co/600x400"
+              src="\image.png"
               alt="Price Tracking Dashboard"
-              className="max-w-full rounded-lg shadow-2xl"
+              className="max-w-full drop-shadow-xl"
             />
           </div>
         </div>
