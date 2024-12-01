@@ -439,9 +439,7 @@ export default function NewListPage() {
             ) : (
               <>
                 <Plus className="mr-2 h-4 w-4" />
-                Create List with {
-                  selectedProducts.length
-                } Products
+                Create List with {selectedProducts.length} Products
               </>
             )}
           </Button>
