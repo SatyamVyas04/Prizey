@@ -435,20 +435,18 @@ export default function ListsPage() {
                           <TableCell>{list.name}</TableCell>
                           <TableCell className="flex items-center">
                             {list.productIds.length} products
-                            {list.productIds.length >= 0 && (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => toggleListExpand(list.id)}
-                                className="ml-2"
-                              >
-                                {expandedLists[list.id] ? (
-                                  <ChevronUp className="h-4 w-4" />
-                                ) : (
-                                  <ChevronDown className="h-4 w-4" />
-                                )}
-                              </Button>
-                            )}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => toggleListExpand(list.id)}
+                              className="ml-2"
+                            >
+                              {expandedLists[list.id] ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </Button>
                           </TableCell>
                           <TableCell>
                             {new Date(list.createdAt).toLocaleDateString()}

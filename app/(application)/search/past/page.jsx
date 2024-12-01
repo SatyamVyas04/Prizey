@@ -225,126 +225,134 @@ export default function PastSearchesPage() {
   };
 
   if (loading) {
-    <>
-      <header className="flex h-16 shrink-0 items-center gap-2">
-        <div className="flex items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/search">Search</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Past Searches</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </header>
+    return (
+      <>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="/search">Search</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Past Searches</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
 
-      {/* Search and Filter Section */}
-      <div className="space-y-2 p-4 pt-2">
-        <div className="relative flex items-center">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search products by name or brand..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-12"
-          />
-          {searchTerm && (
-            <XCircleIcon
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground"
-              onClick={() => setSearchTerm('')}
+        {/* Search and Filter Section */}
+        <div className="space-y-2 p-4 pt-2">
+          <div className="relative flex items-center">
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search products by name or brand..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-12"
             />
+            {searchTerm && (
+              <XCircleIcon
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground"
+                onClick={() => setSearchTerm('')}
+              />
+            )}
+          </div>
+
+          {/* Advanced Filters */}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Min Price
+              </label>
+              <Input
+                type="number"
+                placeholder="Min Price"
+                value={filters.minPrice}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, minPrice: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Max Price
+              </label>
+              <Input
+                type="number"
+                placeholder="Max Price"
+                value={filters.maxPrice}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, maxPrice: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Min Stars
+              </label>
+              <Input
+                type="number"
+                placeholder="Min Stars"
+                min="0"
+                max="5"
+                value={filters.minStars}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, minStars: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium">Brand</label>
+              <select
+                className="w-full rounded-md border p-2"
+                value={filters.brand}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, brand: e.target.value }))
+                }
+              >
+                <option value="">All Brands</option>
+                {uniqueBrands.map((brand) => (
+                  <option key={brand} value={brand}>
+                    {brand}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Clear Filters */}
+          {(searchTerm ||
+            filters.minPrice ||
+            filters.maxPrice ||
+            filters.minStars ||
+            filters.brand) && (
+            <div className="mt-2 flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                {filteredProducts.length} products found
+              </p>
+              <button
+                onClick={clearFilters}
+                className="flex items-center text-sm text-red-500 hover:underline"
+              >
+                <XCircleIcon className="mr-2 h-4 w-4" />
+                Clear All Filters
+              </button>
+            </div>
           )}
         </div>
-
-        {/* Advanced Filters */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium">Min Price</label>
-            <Input
-              type="number"
-              placeholder="Min Price"
-              value={filters.minPrice}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, minPrice: e.target.value }))
-              }
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Max Price</label>
-            <Input
-              type="number"
-              placeholder="Max Price"
-              value={filters.maxPrice}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, maxPrice: e.target.value }))
-              }
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Min Stars</label>
-            <Input
-              type="number"
-              placeholder="Min Stars"
-              min="0"
-              max="5"
-              value={filters.minStars}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, minStars: e.target.value }))
-              }
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Brand</label>
-            <select
-              className="w-full rounded-md border p-2"
-              value={filters.brand}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, brand: e.target.value }))
-              }
-            >
-              <option value="">All Brands</option>
-              {uniqueBrands.map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* Loader */}
+        <div className="flex flex-1 items-center justify-center">
+          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-primary" />
         </div>
-
-        {/* Clear Filters */}
-        {(searchTerm ||
-          filters.minPrice ||
-          filters.maxPrice ||
-          filters.minStars ||
-          filters.brand) && (
-          <div className="mt-2 flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
-              {filteredProducts.length} products found
-            </p>
-            <button
-              onClick={clearFilters}
-              className="flex items-center text-sm text-red-500 hover:underline"
-            >
-              <XCircleIcon className="mr-2 h-4 w-4" />
-              Clear All Filters
-            </button>
-          </div>
-        )}
-      </div>
-      {/* Loader */}
-      <div className="flex flex-1 items-center justify-center">
-        <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-primary" />
-      </div>
-      <Toaster />
-    </>;
+        <Toaster />
+      </>
+    );
   }
 
   return (
