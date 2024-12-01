@@ -35,7 +35,7 @@ export async function GET(req, { params }) {
       product,
     });
   } catch (error) {
-    console.error('Error fetching product:', error);
+    // console.error('Error fetching product:', error);
     return NextResponse.json(
       {
         success: false,
@@ -115,7 +115,7 @@ export async function PUT(req, { params }) {
 
     return NextResponse.json(updatedList, { status: 200 });
   } catch (error) {
-    console.error('Error updating list:', error);
+    // console.error('Error updating list:', error);
     return NextResponse.json(
       {
         success: false,
@@ -195,7 +195,7 @@ export async function DELETE(req, { params }) {
 
     return NextResponse.json(updatedList, { status: 200 });
   } catch (error) {
-    console.error('Error deleting product from list:', error);
+    // console.error('Error deleting product from list:', error);
     return NextResponse.json(
       {
         success: false,

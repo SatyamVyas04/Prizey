@@ -107,7 +107,7 @@ export async function POST(req) {
       total: processedProducts.length,
     });
   } catch (error) {
-    console.error('Scraping error:', error);
+    // console.error('Scraping error:', error);
     return NextResponse.json(
       {
         success: false,

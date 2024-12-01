@@ -29,7 +29,7 @@ const options = {
         if (!credentials || !credentials.email || !credentials.password) {
           return null;
         }
-        console.log(credentials);
+        // console.log(credentials);
         const email = credentials.email;
         const password = saltHashPassword(credentials.password);
 

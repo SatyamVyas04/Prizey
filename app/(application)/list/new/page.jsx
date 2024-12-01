@@ -65,7 +65,7 @@ export default function NewListPage() {
           setOriginalProducts(data.products);
         }
       } catch (error) {
-        console.error('Failed to fetch products', error);
+        // console.error('Failed to fetch products', error);
       }
     }
     fetchProducts();

@@ -9,7 +9,7 @@ const getUserByEmail = async (email) => {
     const user = await db.user.findUnique({ where: email });
     return user;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };
@@ -32,7 +32,7 @@ export const loginWithCreds = async (formData) => {
   };
 
   const existingUser = await getUserByEmail({ email: rawFormData.email });
-  console.log(existingUser);
+  // console.log(existingUser);
 
   try {
     const user = await signIn('credentials', rawFormData);

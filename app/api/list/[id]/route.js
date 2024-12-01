@@ -47,7 +47,7 @@ export async function GET(req, { params }) {
       })),
     });
   } catch (error) {
-    console.error('Error fetching list:', error);
+    // console.error('Error fetching list:', error);
     return NextResponse.json(
       { error: 'Failed to fetch list' },
       { status: 500 },
@@ -86,7 +86,7 @@ export async function PUT(req, { params }) {
 
     return NextResponse.json(updatedList);
   } catch (error) {
-    console.error('Error updating list:', error);
+    // console.error('Error updating list:', error);
 
     // Handle specific Prisma error for non-existent record
     if (
@@ -118,7 +118,7 @@ export async function DELETE(req, { params }) {
       { status: 200 },
     );
   } catch (error) {
-    console.error('Error deleting list:', error);
+    // console.error('Error deleting list:', error);
 
     // Handle specific Prisma error for non-existent record
     if (
@@ -173,7 +173,7 @@ export async function POST(req, { params }) {
 
     return NextResponse.json(updatedList, { status: 200 });
   } catch (error) {
-    console.error('Error adding products to list:', error);
+    // console.error('Error adding products to list:', error);
     return NextResponse.json(
       { error: 'Failed to add products' },
       { status: 500 },

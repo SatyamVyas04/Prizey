@@ -106,7 +106,7 @@ export async function POST(req) {
             return newProduct;
           }
         } catch (productError) {
-          console.error(
+          // console.error(
             `Error saving individual product: ${productData.asin}`,
             productError,
           );
@@ -125,7 +125,7 @@ export async function POST(req) {
       savedProducts: filteredSavedProducts,
     });
   } catch (error) {
-    console.error('Product save error:', error);
+    // console.error('Product save error:', error);
     return NextResponse.json(
       {
         success: false,
@@ -157,7 +157,7 @@ export async function GET(req) {
       products,
     });
   } catch (error) {
-    console.error('Product fetch error:', error);
+    // console.error('Product fetch error:', error);
     return NextResponse.json(
       {
         success: false,
