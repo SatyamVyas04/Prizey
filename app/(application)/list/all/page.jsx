@@ -112,7 +112,7 @@ export default function ListsPage() {
   };
 
   const toggleListExpand = (listId) => {
-    const isCurrentlyExpanded = !!expandedLists[listId];
+    const isCurrentlyExpanded = Boolean(expandedLists[listId]);
 
     if (!isCurrentlyExpanded) {
       fetchListProducts(listId);
