@@ -516,7 +516,7 @@ export default function PastSearchesPage() {
       {/* Product Price Variance Modal */}
       {selectedProduct && (
         <Dialog
-          open={!!selectedProduct}
+          open={Boolean(selectedProduct)}
           onOpenChange={() => setSelectedProduct(null)}
         >
           <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[800px]">
